@@ -1,9 +1,9 @@
 #!/usr/bin/env node
+import getArgs from './helpers/args.js'
 
 const initCli = () => {
-  process.argv.forEach(function (val, index, array) {
-    console.log(index + ': ' + val)
-  })
+  const args = getArgs(process.argv)
+  console.log(args)
 }
 
 initCli()
