@@ -11,11 +11,18 @@ const initCli = () => {
   if (args.s) {
   }
   if (args.t) {
-    saveKeyValue('token', args.t)
+    saveToken(args.t)
+    return
   }
-  // printError()
-  // printSuccess()
-  // printHelp()
+}
+
+const saveToken = async (token) => {
+  try {
+    await saveKeyValue('token', token)
+    printSuccess('Токен сохранен')
+  } catch (e) {
+    printError(e)
+  }
 }
 
 initCli()
