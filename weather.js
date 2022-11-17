@@ -9,16 +9,15 @@ const initCli = async () => {
   if (args.h) {
     printHelp()
   }
-  if (args.s) {
-    saveKeyValue('city', args.s)
+  if (args.c) {
+    saveCity(args.c)
     printSuccess('Город сохранен')
   }
   if (args.t) {
     saveToken(args.t)
     return
   }
-  const weatherData = await getWeather('pskow')
-  console.log(weatherData)
+  getForecast()
 }
 
 const saveToken = async (token) => {
@@ -30,6 +29,33 @@ const saveToken = async (token) => {
     printSuccess('Токен сохранен')
   } catch (e) {
     printError(e)
+  }
+}
+
+const saveCity = async (city) => {
+  if (!city.length) {
+    printError('Не передан город')
+  }
+  try {
+    await saveKeyValue('city', city)
+    printSuccess('Город сохранен')
+  } catch (e) {
+    printError(e)
+  }
+}
+
+const getForecast = async () => {
+  try {
+    const weatherData = await getWeather('moskwa')
+    console.log(weatherData)
+  } catch(e) {
+    if (e?.response?.status === 404) {
+      printError('Неверно указан город!')
+    } else if (e?.response?.status === 401) {
+      printError('Неверно указан токен!')
+    } else {
+      printError(e.message)
+    }
   }
 }
 
